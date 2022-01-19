@@ -69,6 +69,9 @@ class DoubleDice {
           scnr.nextLine();
           validateInput();
         } while(!validInput);
+        if(validInput){
+          rollDice();
+        }
       }
       System.out.println();
       if(total <= 0){
