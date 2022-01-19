@@ -5,8 +5,9 @@ class DoubleDice {
   Scanner scnr = new Scanner(System.in);
   Double total = 100.00;
   Double bet = -1.00;
-  boolean validInput = false;
+  boolean validInput;
   boolean win;
+  boolean gameOver = false;
 
   public static void askUserForInput(Double total){
     System.out.print("You have $");
@@ -20,15 +21,18 @@ class DoubleDice {
         bet = scnr.nextDouble();
         if(bet == 0){
           System.out.println("See you around, winner!");
+          gameOver = true;
         } else if(bet > total){
             System.out.println("You can't bet more than you have! Try again.");
+            validInput = false;
         } else if(bet < 0){
             System.out.println("Positive numbers only, please.");
+            validInput = false;
         } else {
           validInput = true;
         }
       } catch (InputMismatchException e) {
-          // validInput = false;
+          validInput = false;
           System.out.println("Number inputs only, please.");
       }
   }
@@ -55,15 +59,21 @@ class DoubleDice {
   }
 
   public void main(){
-    while(total > 0.00){
+    while(!gameOver){
       askUserForInput(total);
       validateInput();
       if(validInput){
         rollDice();
+      } else {
+        do{
+          scnr.nextLine();
+          validateInput();
+        } while(!validInput);
       }
       System.out.println();
       if(total <= 0){
         System.out.println("You lost all your money. See you next time.");
+        gameOver = true;
         break;
       }
     }
